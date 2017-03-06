@@ -19,6 +19,7 @@ var defaultOptions = {
   serializers: {},
   timestamp: true,
   slowtime: false,
+  hrtime: false,
   extreme: false,
   level: 'info',
   levelVal: undefined,
@@ -221,6 +222,7 @@ Pino.prototype.child = function child (bindings) {
     name: this.name,
     timestamp: this.timestamp,
     slowtime: this.slowtime,
+    hrtime: this.hrtime,
     chindings: data,
     cache: this.cache,
     formatOpts: this.formatOpts

@@ -173,6 +173,28 @@ test('slowtime', function (t) {
   instance.info('hello world')
 })
 
+test('hrtime', function (t) {
+  var instance = pino({hrtime: true},
+    sink(function (chunk, enc, cb) {
+      var nanoseconds = function (hr) {
+        return ((+hr[0]) * 1e9) + (+hr[1])
+      }
+      var hr = chunk.time.slice(1, -1).split(',')
+
+      t.ok(nanoseconds(hr) <= nanoseconds(process.hrtime()), 'time is greater than Date.now()')
+      t.end()
+    }))
+
+  instance.info('hello world')
+})
+
+test('slowtime with hrtime throws', function (t) {
+  t.plan(1)
+  t.throws(function () {
+    pino({slowtime: true, hrtime: true})
+  }, /.*both slowtime and hrtime are used.*/)
+})
+
 test('http request support via serializer in a child', function (t) {
   t.plan(3)
 
